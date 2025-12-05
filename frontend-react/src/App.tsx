@@ -3,6 +3,7 @@ import Navbar from './components/Navbar'
 import Sidebar from './components/Sidebar'
 import CapitalizePage from './pages/CapitalizePage'
 import OCRPage from './pages/OCRPage'
+import CountPage from './pages/CountPage'
 
 export default function App() {
   const [page, setPage] = useState('format')
@@ -24,6 +25,7 @@ export default function App() {
               }}
             />
           )}
+          {page === 'count' && <CountPage />}
         </main>
       </div>
     </div>

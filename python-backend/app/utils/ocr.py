@@ -7,7 +7,6 @@ def extract_text_from_image(file_bytes: bytes) -> Optional[str]:
         import io
         img = Image.open(io.BytesIO(file_bytes))
         text = pytesseract.image_to_string(img)
-        return text.strip()
+        return text
     except Exception:
         return None
-

@@ -22,7 +22,14 @@ export default function Sidebar({ onSelect }: Props) {
             className="inline-flex items-center px-3 py-1.5 text-sm rounded bg-violet-600 text-white hover:bg-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-400"
             onClick={() => onSelect('format')}
           >
-            Text Formater
+            Text Formatter
+          </button>
+          <div className="h-2" />
+          <button
+            className="inline-flex items-center px-3 py-1.5 text-sm rounded bg-slate-700 text-white hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-400"
+            onClick={() => onSelect('ocr')}
+          >
+            Image to Text (OCR)
           </button>
         </nav>
       )}

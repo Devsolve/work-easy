@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render, fireEvent, screen } from '@testing-library/react'
-import CapitalizePage from '../pages/CapitalizePage'
+import OCRPage from '../pages/OCRPage'
 
 describe('Paste image', () => {
   it('pastes image and extracts text', async () => {
@@ -9,7 +9,7 @@ describe('Paste image', () => {
       json: async () => ({ result: 'Extracted from paste' }),
     } as unknown as Response)
 
-    render(<CapitalizePage />)
+    render(<OCRPage />)
     const pasteArea = screen.getByText('Paste image here (Ctrl+V)')
     const file = new File(['fake'], 'clip.png', { type: 'image/png' })
     const clipboardData = {

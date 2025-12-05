@@ -2,31 +2,14 @@ import { useState } from 'react'
 import { API_BASE_URL } from '../constants'
 import { fetchJson } from '../utils'
 
-export default function CapitalizePage() {
-  const [text, setText] = useState('')
+type Props = { initialText?: string }
+
+export default function CapitalizePage({ initialText }: Props) {
+  const [text, setText] = useState(initialText ?? '')
   const [result, setResult] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
-  const [imageFile, setImageFile] = useState<File | null>(null)
-  const handlePaste = (e: React.ClipboardEvent<HTMLDivElement>) => {
-    const items = e.clipboardData?.items
-    if (items && items.length) {
-      for (let i = 0; i < items.length; i++) {
-        const it = items[i]
-        if (it.kind === 'file' && it.type.startsWith('image/')) {
-          const f = it.getAsFile()
-          if (f) setImageFile(f)
-          return
-        }
-      }
-    }
-    const files = e.clipboardData?.files
-    if (files && files.length) {
-      const f = files[0]
-      if (f && f.type.startsWith('image/')) setImageFile(f)
-    }
-  }
 
   const convert = async (mode?: string) => {
     setLoading(true)
@@ -53,60 +36,6 @@ export default function CapitalizePage() {
         Change Text Format
       </h1>
       <div className="bg-white rounded border shadow-sm p-4 space-y-4">
-        <div onPaste={handlePaste}>
-          <label
-            htmlFor="image"
-            className="block text-sm font-medium text-slate-700"
-          >
-            Image OCR
-          </label>
-          <input
-            id="image"
-            type="file"
-            accept="image/*"
-            onChange={(e) => setImageFile(e.target.files?.[0] ?? null)}
-            className="mt-1 block w-full text-sm"
-          />
-          <div
-            tabIndex={0}
-            className="mt-2 w-full rounded border border-dashed border-slate-300 p-3 text-sm text-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-400"
-          >
-            Paste image here (Ctrl+V)
-          </div>
-          <div className="mt-2">
-            <button
-              onClick={async () => {
-                if (!imageFile) {
-                  setError('Please select an image')
-                  return
-                }
-                setLoading(true)
-                setError('')
-                setSuccess('')
-                try {
-                  const fd = new FormData()
-                  fd.append('image', imageFile)
-                  const res = await fetch(`${API_BASE_URL}/api/ocr`, {
-                    method: 'POST',
-                    body: fd,
-                  })
-                  const data = await res.json()
-                  if (!res.ok) throw new Error(data?.error || 'OCR failed')
-                  setText(data.result || '')
-                  setSuccess('Image text extracted')
-                } catch (e) {
-                  setError('Failed to extract text from image')
-                } finally {
-                  setLoading(false)
-                }
-              }}
-              disabled={loading}
-              className="inline-flex items-center px-3 py-1.5 text-sm rounded bg-slate-700 text-white hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-400 disabled:opacity-50"
-            >
-              Extract text
-            </button>
-          </div>
-        </div>
         <div>
           <label
             htmlFor="input"
